@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { NewsService } from './../news.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewsPage implements OnInit {
 
-  constructor() { }
+  articles: any[];
+
+  constructor(private newsService: NewsService,
+              private router: Router ) { }
 
   ngOnInit() {
+    this.newsService.getData('everything?q=bitcoin&from=2019-02-21&sortBy=publishedAt').subscribe(data => this.articles = data['articles']);
+  }
+
+  onGoToNewsSinglePage(article) {
+    this.newsService.currentArticle = article;
+    this.router.navigate(['/news-single']);
   }
 
 }
